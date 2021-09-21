@@ -18,7 +18,7 @@ or
 ### Running settings
 `> set FLASK_APP=app`
 <br/>
-`set FLASK_ENV=development`
+`>set FLASK_ENV=development`
 <br/>
 `> flask run`
 
