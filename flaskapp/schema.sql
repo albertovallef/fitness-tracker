@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user (
+  u_userId INTEGER PRIMARY KEY AUTOINCREMENT,
+  u_name TEXT UNIQUE NOT NULL,
+  u_password TEXT NOT NULL,
+  u_trainer BIT DEFAULT 0
+);
