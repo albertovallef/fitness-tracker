@@ -2,14 +2,22 @@
 This file starts and configures the flask application
 """
 from flask import Flask, render_template
-from flaskapp import auth
+from flaskapp import auth, db
+import os
 
 
 app = Flask(__name__, template_folder='static/templates')
+app.config.from_mapping(
+        SECRET_KEY='dev'
+    )
 app.register_blueprint(auth.bp)
+with app.app_context():
+    db.init_db()
+
 
 @app.route('/')
 def home():
+    con = db.get_db()
     return render_template('home.html', title='Home')
 
 

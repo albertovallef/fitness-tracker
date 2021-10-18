@@ -1,0 +1,1 @@
+DATABASE = 'flaskapp/data.db'
