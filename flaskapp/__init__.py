@@ -1,9 +1,8 @@
 """
 This file starts and configures the flask application
 """
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for
 from flaskapp import auth, db
-import os
 
 
 app = Flask(__name__, template_folder='static/templates')
@@ -17,8 +16,10 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    con = db.get_db()
-    return render_template('home.html', title='Home')
+    if 'user' in session:
+        render_template(home)
+    else:
+        return redirect(url_for('auth.login'))
 
 
 if __name__ == '__main__':
