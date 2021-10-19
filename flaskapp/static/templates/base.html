@@ -34,10 +34,16 @@
             <a class="nav-item nav-link" href="/progress">Progress</a>
           </div>
           <!-- Navbar Right Side -->
-          <div class="navbar-nav">
-            <a class="nav-item nav-link" href="/auth/login">Login</a>
-            <a class="nav-item nav-link" href="/auth/register">Register</a>
-          </div>
+          {% if session['user'] %}
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/auth/logout">Logout</a>
+            </div>
+          {% else %}
+            <div class="navbar-nav">
+              <a class="nav-item nav-link" href="/auth/login">Login</a>
+              <a class="nav-item nav-link" href="/auth/register">Register</a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </nav>

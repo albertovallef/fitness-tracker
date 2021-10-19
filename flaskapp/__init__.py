@@ -17,7 +17,7 @@ with app.app_context():
 @app.route('/')
 def home():
     if 'user' in session:
-        render_template(home)
+        return render_template('home.html', text=f"Welcome {session['user']}")
     else:
         return redirect(url_for('auth.login'))
 
