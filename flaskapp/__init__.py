@@ -16,6 +16,10 @@ with app.app_context():
 
 @app.route('/')
 def home():
+    """
+    Home page where we welcome user and where workouts can be added
+    :return: html login template if not session active or home page if session
+    """
     if 'user' in session:
         return render_template('home.html', text=f"Welcome {session['user']}")
     else:
