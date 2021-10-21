@@ -19,8 +19,14 @@ def login():
     if request.method == 'POST':
         user = request.form['user_name']
         password = request.form['user_password']
-        session['user'] = user
-        return redirect(url_for('home'))
+        resp = db.login_user(user, password)
+        if resp is None:
+            session['user'] = user
+            session['password'] = password
+            return redirect(url_for('home'))
+        else:
+            flash(resp, 'info')
+            return redirect(url_for('auth.login'))
     else:
         return render_template('auth.html', type='Login')
 
@@ -34,6 +40,7 @@ def logout():
     if 'user' in session:
         flash('You have been logout', 'info')
     session.pop('user', None)
+    session.pop('password', None)
     return redirect(url_for('auth.login'))
 
 
@@ -47,7 +54,13 @@ def register():
     if request.method == 'POST':
         user = request.form['user_name']
         password = request.form['user_password']
-        flash('You have been registered', 'info')
-        return redirect(url_for('auth.login'))
+        resp = db.register_user(user, password)
+        if resp is None:
+            resp = "You have been registered"
+            flash(resp, 'info')
+            return redirect(url_for('auth.login'))
+        else:
+            flash(resp, 'info')
+            return redirect(url_for('auth.register'))
     else:
         return render_template('auth.html', type='Register')
