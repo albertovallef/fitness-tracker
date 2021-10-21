@@ -16,7 +16,7 @@ or
 ## Run server
 
 ### Running settings
-`> set FLASK_APP=app`
+`> set FLASK_APP=flaskapp`
 <br/>
 `> set FLASK_ENV=development`
 <br/>
