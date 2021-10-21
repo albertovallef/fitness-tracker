@@ -1,3 +1,6 @@
+"""
+This file handles the authentication logic of the application
+"""
 from flask import (Blueprint, render_template, flash,
                    session, request, redirect, url_for)
 from flaskapp import db
@@ -21,17 +24,17 @@ def login():
     else:
         return render_template('auth.html', type='Login')
 
+
 @bp.route('/logout')
 def logout():
     """
     Terminates session and redirects to login
-    :return:
+    :return: html template of the login page
     """
     if 'user' in session:
         flash('You have been logout', 'info')
     session.pop('user', None)
     return redirect(url_for('auth.login'))
-
 
 
 @bp.route('/')
@@ -48,4 +51,3 @@ def register():
         return redirect(url_for('auth.login'))
     else:
         return render_template('auth.html', type='Register')
-    return render_template('auth.html', type='Register')

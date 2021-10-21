@@ -7,6 +7,9 @@ from flaskapp import config
 
 
 def init_db():
+    """
+    Initializes the database using the schema.sql
+    """
     db = get_db()
 
     with current_app.open_resource('schema.sql') as f:
@@ -25,6 +28,10 @@ def get_db():
 
 
 def close_db(e=None):
+    """
+    Used to close database after committing
+    :param e: Errors if any
+    """
     db = g.pop('db', None)
 
     if db is not None:
