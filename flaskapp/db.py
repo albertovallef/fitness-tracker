@@ -4,6 +4,7 @@ File used to create connections and run queries into database
 import sqlite3
 from flask import current_app, g
 from flaskapp import config
+from typing import Optional
 
 
 def init_db():
@@ -36,6 +37,54 @@ def close_db(e=None):
 
     if db is not None:
         db.close()
+
+
+def register_user(username: str, password: str) -> Optional[str]:
+    """
+    Registers username with password if valid
+    :param username: string with the username
+    :param password: string with the password
+    :return: error message if fail or None if success
+    """
+    conn = get_db()
+    try:
+        conn.execute("INSERT INTO user (u_name, u_password) VALUES (?, ?)",
+                     (username, password))
+        conn.commit()
+        close_db()
+        return None
+    except sqlite3.IntegrityError:
+        error = f"Username {username} already exists"
+        return error
+    except Exception:
+        error = "500 Internal Server Error"
+        return error
+
+
+def login_user(username: str, password: str) -> Optional[str]:
+    """
+    Verifies users exists in database
+    :param username: string with the username
+    :param password: string with the password
+    :return: error message if fail or None if success
+    """
+    conn = get_db()
+    error = None
+    try:
+        user_data = conn.execute("SELECT * FROM user WHERE u_name = ? "
+                                 "AND u_password = ?",
+                                 (username, password)).fetchone()
+        print(user_data)
+        close_db()
+        if user_data is None:
+            error = "Invalid credentials, please try again"
+            return error
+        else:
+            return error
+    except Exception:
+        error = "500 Internal Server Error"
+        return error
+
 
 
 
