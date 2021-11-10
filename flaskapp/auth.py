@@ -54,7 +54,7 @@ def register():
     if request.method == 'POST':
         user = request.form['user_name']
         password = request.form['user_password']
-        isTrainer = request.form['is_trainer']
+        isTrainer = request.form.get('is_trainer')
         resp = db.register_user(user, password, isTrainer)
         if resp is None:
             resp = "You have been registered"
