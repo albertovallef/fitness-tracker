@@ -102,10 +102,3 @@ def login_user(username: str, password: str) -> Optional[str]:
     except Exception:
         error = "500 Internal Server Error"
         return error
-
-
-
-
-
-
-
