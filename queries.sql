@@ -47,4 +47,9 @@ INSERT into category (c_name)
     ('lower back'),
     ('upper back');
 
---8
+--8 selects all exercises from exercise table so user 
+--  can select an exercise from the list of exercises
+SELECT e_name FROM exercise 
+    Order by e_name
+
+--9 
