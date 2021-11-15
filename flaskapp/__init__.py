@@ -28,7 +28,7 @@ def home():
 # @app.route('/')
 @app.route('/workout', methods=('GET', 'POST'))
 def workout():
-    return render_template('workout.html')
+    return render_template('workout.html', text=f"Welcome")
 
 if __name__ == '__main__':
     app.run(debug=True)
