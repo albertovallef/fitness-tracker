@@ -17,3 +17,13 @@ INSERT INTO customer (c_userID)
     Select u_userID from user 
     where u_name = ? 
     and u_password = ?;
+
+--5: Search by category
+    SELECT e_name from category, exercise, ex_cat
+    where ec_categoryID = c_categoryID
+    and ec_exerciseID = e_exerciseID
+    and c_name = ?;
+
+--6: Search by workout name
+    SELECT e_name from exercise
+    and e_name = ?;
