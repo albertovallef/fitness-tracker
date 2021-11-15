@@ -1,6 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>{{text}}</p>
-  <button class=default>Add Workout</button>
+<h1 class="row justify-content-center align-items-center">Add Workout</h1>
+
+<h2>Search by Exercise Name</h2>
+
+<input list="exercises" name="by_ex" id="by_ex">
+<datalist id="exercises">
+  {% if exercises %}
+  {% for exercise in exercises %}
+  <option value='{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}'>
+  {% endfor %}
+  {% endif %}
+</datalist>
+<button name=by_ex if=by_ex class=default>Add Workout</button>
+
+<br>
+<br>
+<br>
+<br>
+
+
+<h2>Search by Category</h2>
+<input list="categories" name="by_cat" id="by_cat">
+<datalist id="categories">
+  <!-- {% if categories %} -->
+  {% for category in categories %}
+  <option value='{{ category|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}'>
+  {% endfor %}
+  <!-- {% endif %} -->
+</datalist>
+<button class=default name=by_cat id=by_cat>Show Workouts</button>
+
 {% endblock %}

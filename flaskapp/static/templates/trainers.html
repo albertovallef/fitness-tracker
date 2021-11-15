@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="row justify-content-center align-items-center">Trainers</h2>
+
+<input list="trainers" name="trainers">
+<datalist id="trainers">
+  {% if trainers %}
+  {% for trainer in trainers %}
+  <option value='{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}'>
+  {% endfor %}
+  {% endif %}
+</datalist>
+
+
+{% endblock %}

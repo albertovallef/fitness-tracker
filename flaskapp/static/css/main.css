@@ -19,6 +19,8 @@ body {
   
   .site-header .navbar-nav .nav-link {
     color: #cbd5db;
+    /* border-color: white;
+    border-style: solid; */
   }
   
   .site-header .navbar-nav .nav-link:hover {
