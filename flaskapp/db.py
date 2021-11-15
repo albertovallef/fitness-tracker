@@ -39,21 +39,21 @@ def close_db(e=None):
         db.close()
 
 
-def register_user(username: str, password: str, isTrainer: str) -> Optional[str]:
+def register_user(username: str, password: str, is_trainer: str) -> Optional[str]:
     """
     Registers username with password if valid
     :param username: string with the username
     :param password: string with the password
-    :param isTrainer: str whether the user is a trainer
+    :param is_trainer: str whether the user is a trainer
     :return: error message if fail or None if success
     """
     conn = get_db()
     try:
-       
-        conn.execute("INSERT INTO user (u_name, u_password) VALUES (?, ?)", 
+
+        conn.execute("INSERT INTO user (u_name, u_password) VALUES (?, ?)",
                      (username, password))
         conn.commit()
-        if isTrainer == 'on':
+        if is_trainer == 'on':
             conn.execute("""INSERT INTO trainer (t_userID)
                             Select u_userID from user
                             where u_name = ?
