@@ -101,3 +101,55 @@ def login_user(username: str, password: str) -> Optional[str]:
     except Exception:
         error = "500 Internal Server Error"
         return error
+
+def get_exercises() -> Optional[str]:
+    """
+    returns all e_names from exercise table
+    :return: list of exercise names
+    """
+    conn = get_db()
+    error = None
+    try:
+        exercises = conn.execute("""SELECT e_name FROM exercise
+                                 Order by e_name""").fetchall()
+        # print(results)
+        close_db()
+        return exercises
+    except Exception:
+        error = "no exercises found"
+        return error
+
+def get_categories() -> Optional[str]:
+    """
+    returns all c_name from category table
+    :return: list of category c_name
+    """
+    conn = get_db()
+    error = None
+    try:
+        categories = conn.execute("""SELECT c_name FROM category
+                                    Order by c_name""").fetchall()
+        # print(results)
+        close_db()
+        return categories
+    except Exception:
+        error = "no categories found"
+        return error
+    
+def get_trainers() -> Optional[str]:
+    """
+    returns all u_names of trainer from user table
+    :return: list of trainer's u_name
+    """
+    conn = get_db()
+    error = None
+    try:
+        exercises = conn.execute("""SELECT u_name FROM user, trainer
+                                    where t_userID = u_userID
+                                    Order by u_name""").fetchall()
+        # print(results)
+        close_db()
+        return exercises
+    except Exception:
+        error = "no trainers found"
+        return error

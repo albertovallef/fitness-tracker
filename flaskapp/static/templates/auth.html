@@ -22,11 +22,12 @@
                             <input type="password" class="form-control" name="user_password" placeholder="password"
                                 required>
                         </div>
+                        {% if type == 'Register'%}
                         <div class="form-group">
                             <label for="is_trainer">Trainer
-                            <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer"></label>
-
+                                <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer"></label>
                         </div>
+                        {% endif %}
                         <button type="submit" value="submit" class="btn btn-primary">{{ type }}</button>
                     </form>
                 </div>
