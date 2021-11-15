@@ -51,8 +51,8 @@ def register_user(username: str, password: str, isTrainer: str) -> Optional[str]
     try:
        
         conn.execute("INSERT INTO user (u_name, u_password) VALUES (?, ?)", 
-            (username, password))
-
+                     (username, password))
+        conn.commit()
         if isTrainer == 'on':
             conn.execute("""INSERT INTO trainer (t_userID)
                             Select u_userID from user
@@ -62,13 +62,12 @@ def register_user(username: str, password: str, isTrainer: str) -> Optional[str]
                             Set u_trainer = 1
                             where u_name = ?
                             and u_password = ?""", (username, password))
+            conn.commit()
         else:
             conn.execute("""INSERT INTO customer (c_userID)
                             Select u_userID from user
                             where u_name = ?
                             and u_password = ?""", (username, password))
-        conn.commit()
-
         close_db()
         return None
     except sqlite3.IntegrityError:
