@@ -8,6 +8,11 @@ body {
     color: #444444;
   }
   
+  button.default {
+    color: #ffffff;
+    background-color: #393ce9;
+  }
+
   .bg-steel {
     background-color: #393ce9;
   }

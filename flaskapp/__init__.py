@@ -25,6 +25,10 @@ def home():
     else:
         return redirect(url_for('auth.login'))
 
+# @app.route('/')
+@app.route('/workout', methods=('GET', 'POST'))
+def workout():
+    return render_template('workout.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
