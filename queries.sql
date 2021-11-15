@@ -19,11 +19,32 @@ INSERT INTO customer (c_userID)
     and u_password = ?;
 
 --5: Search by category
-    SELECT e_name from category, exercise, ex_cat
+SELECT e_name from category, exercise, ex_cat
     where ec_categoryID = c_categoryID
     and ec_exerciseID = e_exerciseID
     and c_name = ?;
 
 --6: Search by workout name
-    SELECT e_name from exercise
-    and e_name = ?;
+SELECT e_name from exercise
+    where e_name = ?;
+
+--7: Populating category table:
+INSERT into category (c_name)
+    VALUES
+    ('legs'),
+    ('quad'),
+    ('hamstring'),
+    ('bicep'),
+    ('tricep'),
+    ('forearm'),
+    ('chest'),
+    ('core'),
+    ('calves'),
+    ('delts'),
+    ('traps'),
+    ('lats'),
+    ('glutes'),
+    ('lower back'),
+    ('upper back');
+
+--8
