@@ -97,3 +97,31 @@ SELECT r_datecompleted,
  GROUP BY s_setID
  ORDER BY r_datecompleted;
 
+----------------SUBSCRIPTIONS---------------
+
+
+
+-----------------BODY---------------------
+--Insert
+INSERT INTO body (b_age, b_gender, b_height, b_weight)
+    Select u_userID, ?,?,? from user 
+    where u_name = ? 
+    and u_password = ?;
+
+
+
+--Edit
+Update body
+set b_height = ?
+from user
+where b_userID = u_userID
+and u_name = ?;
+
+
+--Show
+
+SELECT b_age, b_gender, b_height, b_weight
+from body, user
+where u_userID = b_userID
+and u_name = ?;
+
