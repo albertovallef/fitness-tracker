@@ -52,8 +52,27 @@ INSERT into category (c_name)
 SELECT e_name FROM exercise 
     Order by e_name;
 
---9 Search for workouts by Date Created
 
---10 Search for workouts by exercise
+-----------------------QUERIES FOR ADDING A WORKOUT----------------------
+--9 Add a workout (This might end up being multiple queuries
+--Need to get the exercise, sets, reps, and weight from user and add it in
 
---
+
+-- Returns all exercises done on a specific date
+Select e_name, s_reps, s_weight
+from training_session, exercise, sets, workout
+where w_sessionID = r_sessionID
+and w_exerciseID = e_exerciseID
+and r_datecompleted = ?
+order by e_name
+group by s_setID;
+
+
+-- Search for workouts by exercise
+Select r_datecompleted, s_reps, s_weight
+from training_session, exercise, sets, workout
+where w_sessionID = r_sessionID
+and w_exerciseID = e_exerciseID
+and e_name = ?
+order by r_datecompleted
+group by s_setID;
