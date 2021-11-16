@@ -5,9 +5,10 @@
 <br>
 <br>
 <div class="workout-tab">
+  <button id="add-set" class="btn btn-primary">Add set</button>
   <button class="close-button">x</button>
- <div class="workout-tab-content">
-  <div class="input-group">
+ <div id="workout-tab-content" class="workout-tab-content">
+  <div id="add-exercise" class="input-group">
     <select class="form-control">
       {% if exercises %}
         {% for exercise in exercises %}
