@@ -59,20 +59,41 @@ SELECT e_name FROM exercise
 
 
 -- Returns all exercises done on a specific date
-Select e_name, s_reps, s_weight
-from training_session, exercise, sets, workout
-where w_sessionID = r_sessionID
-and w_exerciseID = e_exerciseID
-and r_datecompleted = ?
-order by e_name
-group by s_setID;
+SELECT r_datecompleted,
+       e_name,
+       s_reps,
+       s_weight
+  FROM training_session,
+       exercise,
+       sets,
+       workout,
+       user
+ WHERE w_sessionID = r_sessionID AND
+       w_exerciseID = e_exerciseID AND
+       w_setID = s_setID AND
+       u_userID = r_userID AND
+       r_datecompleted = ? AND
+       u_name = ?
+ GROUP BY s_setID
+ ORDER BY e_name;
 
 
 -- Search for workouts by exercise
-Select r_datecompleted, s_reps, s_weight
-from training_session, exercise, sets, workout
-where w_sessionID = r_sessionID
-and w_exerciseID = e_exerciseID
-and e_name = ?
-order by r_datecompleted
-group by s_setID;
+SELECT r_datecompleted,
+       e_name,
+       s_reps,
+       s_weight
+  FROM training_session,
+       exercise,
+       sets,
+       workout,
+       user
+ WHERE w_sessionID = r_sessionID AND
+       w_exerciseID = e_exerciseID AND
+       u_userID = r_userID AND
+       w_setID = s_setID AND
+       e_name = ? AND
+       u_name = ?
+ GROUP BY s_setID
+ ORDER BY r_datecompleted;
+
