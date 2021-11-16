@@ -1,32 +1,37 @@
---1 (inserts a new user)
-INSERT INTO user (u_name, u_password) VALUES (?, ?)
+--1 Inserts a new user (registration)
+INSERT INTO user (u_name, u_password) VALUES (?, ?);
 
---2 Selects a user from the user table with the given u_name and u_password (for login)
-SELECT * FROM user 
-WHERE u_name = ? 
-AND u_password = ?;
-
---3: Sets a user as a trainer by putting their u_userID into the trainer table
+--2: Sets a user as a trainer by putting their u_userID into the trainer table (registration)
 INSERT INTO trainer (t_userID)
-    Select u_userID from user 
-    where u_name = ? 
-    and u_password = ?;
+    SELECT u_userID FROM user
+    WHERE u_name = ? AND
+          u_password = ?;
+
+--3 Selects a user from the user table with the given u_name and u_password (login)
+SELECT * FROM user 
+WHERE u_name = ? AND
+      u_password = ?;
 
 --4: Sets a user as a customer by putting their u_userID into the customer table
 INSERT INTO customer (c_userID)
-    Select u_userID from user 
-    where u_name = ? 
-    and u_password = ?;
+    SELECT u_userID FROM user
+    WHERE u_name = ? AND
+          u_password = ?;
 
---5: Search by category
-SELECT e_name from category, exercise, ex_cat
-    where ec_categoryID = c_categoryID
-    and ec_exerciseID = e_exerciseID
-    and c_name = ?;
+--5: Search exercise by category
+SELECT e_name
+  FROM category,
+       exercise,
+       ex_cat
+ WHERE ec_categoryID = c_categoryID AND
+       ec_exerciseID = e_exerciseID AND
+       c_name = ?;
 
---6: Search by workout name
-SELECT e_name from exercise
-    where e_name = ?;
+--6: Search by exercise name
+SELECT e_name
+  FROM exercise
+ WHERE e_name = ?;
+
 
 --7: Populating category table:
 INSERT into category (c_name)
@@ -49,16 +54,49 @@ INSERT into category (c_name)
 
 --8 selects all exercises from exercise table so user 
 --  can select an exercise from the list of exercises
-SELECT e_name FROM exercise 
-    Order by e_name;
+SELECT e_name
+  FROM exercise
+ ORDER BY e_name;
 
 
 -----------------------QUERIES FOR ADDING A WORKOUT----------------------
---9 Add a workout (This might end up being multiple queuries
---Need to get the exercise, sets, reps, and weight from user and add it in
+--9 Add a workout
+INSERT into workout (w_sessionID, w_excerciseID, w_setID) VALUES (?, ?, ?, ?);
 
+--10 Select the name, exercise, sets, reps, and weight
+SELECT e_name,
+       s_setID,
+       s_reps,
+       s_weight
+  FROM user,
+       training_session,
+       workout,
+       sets,
+       exercise
+ WHERE u_userID = r_userID AND
+       w_setID = s_setID AND
+       w_exerciseID = e_exerciseID and
+       u_name = ?;
 
--- Returns all exercises done on a specific date
+--11 Add a set
+INSERT INTO sets (s_reps, s_weight, s_duration) VALUES (?, ?, ?, ?);
+
+--12 Calculate progress by selecting average weight between date range for a
+-- specific user and exercise
+SELECT AVG(s_weight)
+  FROM user,
+       training_session,
+       workout,
+       sets,
+       exercise
+ WHERE u_userID = r_userID AND
+       w_setID = s_setID AND
+       w_exerciseID = e_exerciseID AND
+       u_name = ? AND
+       e_name = ? AND
+       r_datecompleted BETWEEN ? AND ?;
+
+--13 Returns all exercises done on a specific date
 SELECT r_datecompleted,
        e_name,
        s_reps,
@@ -78,7 +116,7 @@ SELECT r_datecompleted,
  ORDER BY e_name;
 
 
--- Search for workouts by exercise
+--14 Search for workouts by exercise
 SELECT r_datecompleted,
        e_name,
        s_reps,
@@ -98,30 +136,52 @@ SELECT r_datecompleted,
  ORDER BY r_datecompleted;
 
 ----------------SUBSCRIPTIONS---------------
+--15 Add new subscription
+INSERT INTO subscription (su_customerID, su_trainerID) VALUES (?, ?);
 
-
+--16 Select the user id from customer table
+SELECT c_customerID
+FROM user, customer
+WHERE u_userID = c_userID AND
+      u_name = ?;
 
 -----------------BODY---------------------
---Insert
+--17 Insert
 INSERT INTO body (b_age, b_gender, b_height, b_weight)
-    Select u_userID, ?,?,? from user 
-    where u_name = ? 
-    and u_password = ?;
+    SELECT u_userID, ?,?,? FROM user
+    WHERE u_name = ?
+    AND u_password = ?;
 
 
+--18 Edit
+UPDATE body
+   SET b_height = ?
+  FROM user
+ WHERE b_userID = u_userID AND
+       u_name = ?;
 
---Edit
-Update body
-set b_height = ?
-from user
-where b_userID = u_userID
-and u_name = ?;
 
+--19 Show
+SELECT b_age,
+       b_gender,
+       b_height,
+       b_weight
+  FROM body,
+       user
+ WHERE u_userID = b_userID AND
+       u_name = ?;
 
---Show
-
-SELECT b_age, b_gender, b_height, b_weight
-from body, user
-where u_userID = b_userID
-and u_name = ?;
+--20 Show number of repetitions of all exercises
+SELECT SUM(s_reps)
+  FROM user,
+       training_session,
+       workout,
+       sets,
+       exercise
+ WHERE u_userID = r_userID AND
+       w_setID = s_setID AND
+       w_exerciseID = e_exerciseID AND
+       u_name = ? AND
+       e_name = ? AND
+       r_datecompleted BETWEEN ? AND ?;
 
