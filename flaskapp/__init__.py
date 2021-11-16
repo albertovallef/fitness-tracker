@@ -27,13 +27,6 @@ def home():
     else:
         return redirect(url_for('auth.login'))
 
-@app.route('/')
-def workout():
-    """
-    Page where user adds workouts
-    :return: html workout template with exercises in search bar
-    """
-    return redirect(url_for('workout'))
 
 @app.route('/progress', methods=('GET', 'POST'))
 def progress():
@@ -42,6 +35,7 @@ def progress():
     :return: html progress template
     """
     return render_template('progress.html')
+
 
 @app.route('/trainers', methods=('GET', 'POST'))
 def trainers():

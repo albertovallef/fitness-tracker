@@ -7,6 +7,7 @@ from flaskapp import db
 
 bp = Blueprint('workout', __name__, url_prefix='/workout')
 
+
 @bp.route('/')
 def workout():
     """
@@ -15,6 +16,17 @@ def workout():
     """
     exercises = db.get_exercises()
     categories = db.get_categories()
-    return render_template('workout.html', exercises = exercises, categories = categories)
+    return render_template('workout.html', exercises=exercises,
+                           categories=categories)
+
+
+@bp.route('/add_workout', methods=('GET', 'POST'))
+def add_workout():
+    """
+    Add workout to database when user clicks button
+    :return:
+    """
+    print('Hello world\n')
+    return None
 
 
