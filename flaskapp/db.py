@@ -102,6 +102,7 @@ def login_user(username: str, password: str) -> Optional[str]:
         error = "500 Internal Server Error"
         return error
 
+
 def get_exercises() -> Optional[str]:
     """
     returns all e_names from exercise table
@@ -119,6 +120,7 @@ def get_exercises() -> Optional[str]:
         error = "no exercises found"
         return error
 
+
 def get_categories() -> Optional[str]:
     """
     returns all c_name from category table
@@ -135,7 +137,8 @@ def get_categories() -> Optional[str]:
     except Exception:
         error = "no categories found"
         return error
-    
+
+
 def get_trainers() -> Optional[str]:
     """
     returns all u_names of trainer from user table
