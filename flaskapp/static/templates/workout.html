@@ -1,19 +1,27 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <h1 class="row justify-content-center align-items-center">Add Workout</h1>
+<button id="start_workout" class="btn btn-primary">Start Workout</button>
+<br>
+<br>
+<div class="workout-tab">
+  <button class="close-button">x</button>
+ <div class="workout-tab-content">
+  <div class="input-group">
+    <select class="form-control">
+      {% if exercises %}
+        {% for exercise in exercises %}
+        <option>{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
+      {% endfor %}
+      {% endif %}
+    </select>            
+    <span class="input-group-btn">
+      <button type="submit" value="submit" class="btn btn-primary">Add Workout</button>
+    </span>
+  </div>
+</div> 
+</div>
 
-<h2>Search by Exercise Name</h2>
-
-<input list="exercises" name="by_ex" id="by_ex">
-<datalist id="exercises">
-  {% if exercises %}
-  {% for exercise in exercises %}
-  <option value='{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}'>
-  {% endfor %}
-  {% endif %}
-</datalist>
-<button name=by_ex if=by_ex class=default>Add Workout</button>
 
 <br>
 <br>
