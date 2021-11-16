@@ -44,15 +44,20 @@ CREATE TABLE IF NOT EXISTS category(
   c_categoryID INTEGER PRIMARY KEY AUTOINCREMENT,
   c_name TEXT NOT NULL
 );
-CREATE TABLE IF NOT EXISTS  routine(
+CREATE TABLE IF NOT EXISTS  training_session(
   r_sessionID INTEGER PRIMARY KEY AUTOINCREMENT,
   r_userID INTEGER NOT NULL, 
   r_status BIT default 0, 
-  r_datecreatedm DATE, 
   r_datecompleted DATE 
+);
+CREATE TABLE IF NOT EXISTS workout(
+  w_workoutID PRIMARY KEY AUTOINCREMENT, 
+  w_setID NOT NULL, 
+  w_exerciseID NOT NULL, 
+  w_sessionID
 );
 CREATE TABLE IF NOT EXISTS ex_cat(
   ec_ID INTEGER PRIMARY KEY AUTOINCREMENT,
   ec_categoryID INTEGER NOT NULL,
-   ec_exerciseID INTEGER NOT NULL
+  ec_exerciseID INTEGER NOT NULL
 );
