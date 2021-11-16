@@ -50,6 +50,10 @@ INSERT into category (c_name)
 --8 selects all exercises from exercise table so user 
 --  can select an exercise from the list of exercises
 SELECT e_name FROM exercise 
-    Order by e_name
+    Order by e_name;
 
---9 
+--9 Search for workouts by Date Created
+
+--10 Search for workouts by exercise
+
+--
