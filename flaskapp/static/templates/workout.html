@@ -9,15 +9,18 @@
   <button class="close-button">x</button>
  <div id="workout-tab-content" class="workout-tab-content">
   <div id="add-exercise" class="input-group">
-    <select class="form-control">
+    <select id="select-exercise" class="form-control">
       {% if exercises %}
         {% for exercise in exercises %}
-        <option>{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
+        <option id="option-exe">{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
       {% endfor %}
       {% endif %}
-    </select>            
+    <div class="input-group">
+    <input id="input-reps" type="text"> 
+    <input id="input-weight" type="text">
+    <input id="input-duration" type="text">
     <span class="input-group-btn">
-      <button type="submit" value="submit" class="btn btn-primary">Add Workout</button>
+      <button id="add-exercise-btn"type="submit" value="submit" class="btn btn-primary">Add Workout</button>
     </span>
   </div>
 </div> 
