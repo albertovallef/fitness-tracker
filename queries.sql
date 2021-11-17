@@ -101,6 +101,7 @@ SELECT AVG(s_weight)
        exercise
  WHERE u_userID = r_userID AND
        w_setID = s_setID AND
+       w_sessionID = r_sessionID AND
        w_exerciseID = e_exerciseID AND
        u_name = ? AND
        e_name = ? AND
@@ -163,7 +164,7 @@ INSERT INTO body (b_age, b_gender, b_height, b_weight)
     AND u_password = ?;
 
 
---19 Edit Body
+--19 Edit Body (would be same for height, weight, age)
 UPDATE body
    SET b_height = ?
   FROM user
@@ -181,7 +182,7 @@ SELECT b_age,
  WHERE u_userID = b_userID AND
        u_name = ?;
 
---20 Show number of repetitions of all exercises
+--21 Show number of repetitions of all exercises
 SELECT SUM(s_reps)
   FROM user,
        training_session,
