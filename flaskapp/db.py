@@ -39,7 +39,7 @@ def close_db(e=None):
         db.close()
 
 
-def register_user(username: str, password: str, is_trainer: str) -> Optional[str]:
+def register_user(username: str, password: str, is_trainer: str, b_age: int, b_height: int, b_weight: int, b_gender: str) -> Optional[str]:
     """
     Registers username with password if valid
     :param username: string with the username
@@ -52,6 +52,14 @@ def register_user(username: str, password: str, is_trainer: str) -> Optional[str
 
         conn.execute("INSERT INTO user (u_name, u_password) VALUES (?, ?)",
                      (username, password))
+        conn.commit()
+
+        conn.execute("""INSERT INTO body (b_userID, b_age, b_gender, b_height, b_weight) 
+                        Select 
+                        (SELECT u_userID from user
+                            where u_name = ?
+                            and u_password = ?), ?,?,?,?""",
+                     (username, password, b_age, b_gender, b_height, b_weight))
         conn.commit()
         if is_trainer == 'on':
             conn.execute("""INSERT INTO trainer (t_userID)
@@ -68,6 +76,7 @@ def register_user(username: str, password: str, is_trainer: str) -> Optional[str
                             Select u_userID from user
                             where u_name = ?
                             and u_password = ?""", (username, password))
+            conn.commit()
         close_db()
         return None
     except sqlite3.IntegrityError:

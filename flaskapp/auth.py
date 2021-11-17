@@ -55,7 +55,13 @@ def register():
         user = request.form['user_name']
         password = request.form['user_password']
         is_trainer = request.form.get('is_trainer')
-        resp = db.register_user(user, password, is_trainer)
+        b_age = request.form['body_age']
+        b_height = request.form['body_height']
+        b_weight = request.form['body_weight']
+        b_gender = request.form['body_gender']
+        print(b_age + " h:" + b_height +" w:" + b_weight + " g:" + b_gender)
+
+        resp = db.register_user(user, password, is_trainer, b_age, b_height, b_weight, b_gender)
         if resp is None:
             resp = "You have been registered"
             flash(resp, 'info')
