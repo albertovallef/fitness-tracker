@@ -60,10 +60,22 @@ SELECT e_name
 
 
 -----------------------QUERIES FOR ADDING A WORKOUT----------------------
---9 Add a workout
-INSERT into workout (w_sessionID, w_excerciseID, w_setID) VALUES (?, ?, ?, ?);
+--9 First we create a new training session which contains all workouts performed during that session
+INSERT INTO training_session (r_userID, r_datecompleted) VALUES (?, ?);
 
---10 Select the name, exercise, sets, reps, and weight
+--10 Then we create the set based on USERs s_reps, s_weight, and s_duration
+INSERT INTO sets (s_reps, s_weight, s_duration) VALUES (?, ?, ?);
+
+--11 Add a workout
+INSERT into workout (w_sessionID, w_excerciseID, w_setID)
+SELECT r_sessionID, e_exerciseID, s_setID
+from 
+(SELECT r_sessionID from training_session where r_userID = ? and r_datecompleted = ?), 
+(select e_exerciseID from exercise where e_name = ?), 
+(select s_setID from sets where s_reps = ? and s_weight = ? and s_duration = ?)
+
+
+--12 Select the name, exercise, sets, reps, and weight
 SELECT e_name,
        s_setID,
        s_reps,
@@ -78,10 +90,8 @@ SELECT e_name,
        w_exerciseID = e_exerciseID and
        u_name = ?;
 
---11 Add a set
-INSERT INTO sets (s_reps, s_weight, s_duration) VALUES (?, ?, ?, ?);
 
---12 Calculate progress by selecting average weight between date range for a
+--13 Calculate progress by selecting average weight between date range for a
 -- specific user and exercise
 SELECT AVG(s_weight)
   FROM user,
@@ -96,7 +106,7 @@ SELECT AVG(s_weight)
        e_name = ? AND
        r_datecompleted BETWEEN ? AND ?;
 
---13 Returns all exercises done on a specific date
+--14 Returns all exercises done on a specific date
 SELECT r_datecompleted,
        e_name,
        s_reps,
@@ -116,7 +126,7 @@ SELECT r_datecompleted,
  ORDER BY e_name;
 
 
---14 Search for workouts by exercise
+--15 Search for workouts by exercise
 SELECT r_datecompleted,
        e_name,
        s_reps,
@@ -136,24 +146,24 @@ SELECT r_datecompleted,
  ORDER BY r_datecompleted;
 
 ----------------SUBSCRIPTIONS---------------
---15 Add new subscription
+--16 Add new subscription
 INSERT INTO subscription (su_customerID, su_trainerID) VALUES (?, ?);
 
---16 Select the user id from customer table
+--17 Select the user id from customer table
 SELECT c_customerID
 FROM user, customer
 WHERE u_userID = c_userID AND
       u_name = ?;
 
 -----------------BODY---------------------
---17 Insert
+--18 Insert body foir each created user
 INSERT INTO body (b_age, b_gender, b_height, b_weight)
     SELECT u_userID, ?,?,? FROM user
     WHERE u_name = ?
     AND u_password = ?;
 
 
---18 Edit
+--19 Edit Body
 UPDATE body
    SET b_height = ?
   FROM user
@@ -161,7 +171,7 @@ UPDATE body
        u_name = ?;
 
 
---19 Show
+--20 Show Body
 SELECT b_age,
        b_gender,
        b_height,
