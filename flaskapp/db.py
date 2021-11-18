@@ -4,7 +4,8 @@ File used to create connections and run queries into database
 import sqlite3
 from flask import current_app, g
 from flaskapp import config
-from typing import Optional
+from typing import Optional, Dict
+from datetime import date
 
 
 def init_db():
@@ -100,7 +101,6 @@ def login_user(username: str, password: str) -> Optional[str]:
         user_data = conn.execute("SELECT * FROM user WHERE u_name = ? "
                                  "AND u_password = ?",
                                  (username, password)).fetchone()
-        print(user_data)
         close_db()
         if user_data is None:
             error = "Invalid credentials, please try again"
@@ -164,4 +164,96 @@ def get_trainers() -> Optional[str]:
         return exercises
     except Exception:
         error = "no trainers found"
+        return error
+
+
+def get_training_session(user: str) -> Optional[str]:
+    """
+    Gets the training id from training session table or creates one if there
+    is not one already created or todays session is complete
+    :param user: user name in session
+    :return: None or the training session id
+    """
+    conn = get_db()
+    try:
+        today = date.today().strftime('%Y-%m-%d')
+        training_session = conn.execute("""SELECT r_sessionID
+                                          FROM training_session,
+                                               user
+                                         WHERE r_userID = u_userID AND
+                                               r_status = 0 AND
+                                               u_name = ? AND
+                                               r_datecompleted = ?;""",
+                                        (user, today)).fetchone()
+        close_db()
+        if training_session is None:
+            training_session = insert_training_session(user)
+            return training_session
+        return training_session[0]
+    except sqlite3.Error as error:
+        print(error)
+        return None
+
+
+def insert_training_session(user: str):
+    """
+    Inserts a new session in the training session and returns the id
+    :param user: user name in session
+    :return: training session id or error if any
+    """
+    conn = get_db()
+    try:
+        today = date.today().strftime('%Y-%m-%d')
+
+        conn.execute("""INSERT INTO training_session (r_userID, r_status, r_datecompleted)
+                    SELECT u_userID, 0, ?  FROM user
+                        WHERE u_name = ?;""", (today, user))
+        conn.commit()
+        close_db()
+        return get_training_session(user)
+    except sqlite3.Error as error:
+        print(error)
+        return error
+
+
+def insert_set(data: Dict) -> str:
+    """
+    Inserts data into the sets database and returns the set id
+    :param data: dictionary with the exe name, reps, wight, and duration data
+    :return: id of the created row or None of success
+    """
+    conn = get_db()
+    try:
+        conn.execute("""INSERT INTO sets (s_reps, s_weight, s_duration) 
+                        VALUES (?, ?, ?);""", (data['reps'], data['weight'],
+                                               data['duration']))
+        conn.commit()
+        set_id = conn.execute("""SELECT MAX(s_setID) FROM sets;""").fetchone()
+        close_db()
+        return set_id[0]
+    except sqlite3.Error as error:
+        print(error)
+        return None
+
+
+def insert_workout(training_session_id: str, set_id: str, data: Dict) -> Optional[str]:
+    """
+    Insert data into the workout table
+    :param training_session_id: training session in the session app
+    :param set_id: set of id of the just inserted set
+    :param data: dictionary with the exe name, reps, wight, and duration data
+    :return: None or error
+    """
+    conn = get_db()
+    try:
+        conn.execute("""INSERT into workout (w_sessionID, w_exerciseID, w_setID)
+                        SELECT ?, e_exerciseID, ? FROM 
+                        (SELECT e_exerciseID FROM exercise 
+                            WHERE e_name = ?);""", (training_session_id, set_id,
+                                                    data['exercise']))
+        conn.commit()
+        close_db()
+        return None
+    except sqlite3.Error as error:
+        print(error)
         return error
