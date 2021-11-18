@@ -44,7 +44,7 @@ def trainers():
     :return: html progress template
     """
     trainers = db.get_trainers()
-    return render_template('trainers.html', trainers = trainers)
+    return render_template('trainers.html', trainers=trainers)
 
 
 if __name__ == '__main__':

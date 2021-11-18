@@ -4,7 +4,7 @@ File used to create connections and run queries into database
 import sqlite3
 from flask import current_app, g
 from flaskapp import config
-from typing import Optional
+from typing import Optional, Dict
 
 
 def init_db():
@@ -155,4 +155,56 @@ def get_trainers() -> Optional[str]:
         return exercises
     except Exception:
         error = "no trainers found"
+        return error
+
+
+def insert_set(data: Dict) -> str:
+    """
+    Insert data into the sets database
+    FIXME: We could do a check in the table for data with the same parameters
+    FIXME: Add if statement that checks for same data if not create instance
+    :param data: dictionary with the exe name, reps, wight, and duration data
+    :return: id of the created row or None of success
+    """
+    conn = get_db()
+    error = None
+    try:
+        conn.execute("""INSERT INTO sets (s_reps, s_weight, s_duration) 
+                        VALUES (?, ?, ?);""", (data['reps'], data['weight'],
+                                               data['duration']))
+        conn.commit()
+        set_id = conn.execute("""SELECT MAX(s_setID) FROM sets;""").fetchone()
+        close_db()
+        return set_id[0]
+    except Exception:
+        error = "Error inserting set"
+        return error
+
+
+def insert_workout(user: str, set_id: str, data: Dict) -> Optional[str]:
+    """
+    Insert data into the workout table
+    :param user: name of the user in session
+    :param set_id: set of id of the just inserted set
+    :param data: dictionary with the exe name, reps, wight, and duration data
+    :return: None or error
+    """
+    print("Hellow world")
+    conn = get_db()
+    error = None
+    try:
+        sql = ("""INSERT into workout (w_sessionID, w_exerciseID, w_setID)
+                SELECT r_sessionID, e_exerciseID, ? FROM 
+                (SELECT r_sessionID FROM training_session, user 
+                    WHERE r_userID = u_userId AND u_name = ? AND 
+                    r_status = 0), 
+                (SELECT e_exerciseID FROM exercise 
+                    WHERE e_name = ?);""", (set_id, user, data['exercise']))
+        conn.execute(sql)
+        conn.commit()
+        close_db()
+        return None
+    except Exception:
+        error = "Error inserting workout"
+        print(error)
         return error
