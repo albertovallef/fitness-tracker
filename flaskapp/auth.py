@@ -23,6 +23,7 @@ def login():
         if resp is None:
             session['user'] = user
             session['password'] = password
+            session['training_session'] = db.get_training_session(user)
             return redirect(url_for('home'))
         else:
             flash(resp, 'info')
@@ -41,6 +42,7 @@ def logout():
         flash('You have been logout', 'info')
     session.pop('user', None)
     session.pop('password', None)
+    session.pop('training_session', None)
     return redirect(url_for('auth.login'))
 
 

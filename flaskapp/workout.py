@@ -28,7 +28,7 @@ def add_workout():
     """
     data = request.get_json()
     set_id = db.insert_set(data)
-    db.insert_workout(session['user'], set_id, data)
+    db.insert_workout(session['training_session'], set_id, data)
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
