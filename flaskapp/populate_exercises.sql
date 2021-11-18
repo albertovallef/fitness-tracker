@@ -15,7 +15,8 @@ VALUES
   ('lats'),
   ('glutes'),
   ('lower back'),
-  ('upper back');
+  ('upper back')
+  ('cardio');
 
 INSERT into exercise (e_name) 
 VALUES 
@@ -55,7 +56,9 @@ VALUES
   ('pronated curls'),
   ('wrist curls'),
   ('chin up'),
-  ('lunges');
+  ('lunges'),
+  ('running'),
+  ('jogging');
 
 INSERT into ex_cat (ec_categoryID, ec_exerciseID)
 VALUES
@@ -136,4 +139,8 @@ VALUES
   (2,37),
   (3,37),
   (13,37),
-  (9,37);
+  (9,37),
+  (16,38),
+  (1,38),
+  (16,39),
+  (1,39);
