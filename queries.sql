@@ -236,27 +236,3 @@ AND
      WHERE u_userID = c_userID
      and u_name = ?
 );
-
-
---23 Show number of repetitions of all exercises
-SELECT SUM(s_reps)
-  FROM user,
-       training_session,
-       workout,
-       sets,
-       exercise
- WHERE u_userID = r_userID AND
-       w_setID = s_setID AND
-       w_exerciseID = e_exerciseID AND
-       u_name = ? AND
-       e_name = ? AND
-       r_datecompleted BETWEEN ? AND ?;
-
---22 Customer Unsubscribes from trainer
-DELETE from subscription (su_trainerID, su_customerID)
-SELECT t_trainerID, c_userID
-from user u1, user u2, trainer, customer
-where u1.u_userID = t_trainerID
-and u1.u_userID = c_userID
-and u1.u_name = ?
-and u2.u_name = ?
