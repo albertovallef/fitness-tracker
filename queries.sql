@@ -196,3 +196,11 @@ SELECT SUM(s_reps)
        e_name = ? AND
        r_datecompleted BETWEEN ? AND ?;
 
+--22 Customer Unsubscribes from trainer
+DELETE from subscription (su_trainerID, su_customerID)
+SELECT t_trainerID, c_userID
+from user u1, user u2, trainer, customer
+where u1.u_userID = t_trainerID
+and u1.u_userID = c_userID
+and u1.u_name = ?
+and u2.u_name = ?
