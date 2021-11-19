@@ -2,7 +2,7 @@
 This file starts and configures the flask application
 """
 from flask import Flask, render_template, session, redirect, url_for
-from flaskapp import auth, db, workout
+from flaskapp import auth, db, workout, progress
 
 
 app = Flask(__name__, template_folder='static/templates')
@@ -11,6 +11,7 @@ app.config.from_mapping(
     )
 app.register_blueprint(auth.bp)
 app.register_blueprint(workout.bp)
+app.register_blueprint(progress.bp)
 
 with app.app_context():
     db.init_db()
@@ -26,15 +27,6 @@ def home():
         return render_template('home.html', text=f"Welcome {session['user']}")
     else:
         return redirect(url_for('auth.login'))
-
-
-@app.route('/progress', methods=('GET', 'POST'))
-def progress():
-    """
-    Page where users view progress
-    :return: html progress template
-    """
-    return render_template('progress.html')
 
 
 @app.route('/trainers', methods=('GET', 'POST'))
