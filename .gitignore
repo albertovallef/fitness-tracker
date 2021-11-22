@@ -1,2 +1,4 @@
 venv/
-flaskapp/__pycache__/
+ flaskapp/__pycache__/
+.idea
+__pycache__

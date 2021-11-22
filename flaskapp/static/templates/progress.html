@@ -4,6 +4,27 @@
 <h2 class="row justify-content-center align-items-center">Progress</h2>
 
 
+<div class="input-group">
+    <select name="exercise" id="select-exercise" class="form-control">
+    {% if exercises %}
+        {% for exercise in exercises %}
+        <option id="option-exe">{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
+    {% endfor %}
+    {% endif %}
+    <div class="input-group">
+        <input type="text" id="start-date" placeholder="start">
+        <input type="text" id="end-date" placeholder="end">
+        <span class="input-group-btn">
+        <button id="view-progress-btn"type="submit" value="submit" class="btn btn-primary">View</button>
+        </span>
+    </div>
+</div> 
+
+<div id="chart">
+
+</div>
+
+
 
 
 {% endblock %}

@@ -2,7 +2,7 @@
 This file handles searching and adding workouts
 """
 from flask import (Blueprint, render_template, flash,
-                   session, request, redirect, url_for)
+                   session, request, redirect, url_for, json)
 from flaskapp import db
 
 bp = Blueprint('workout', __name__, url_prefix='/workout')
@@ -20,13 +20,28 @@ def workout():
                            categories=categories)
 
 
-@bp.route('/add_workout', methods=('GET', 'POST'))
+@bp.route('/add_workout', methods=['POST'])
 def add_workout():
     """
     Add workout to database when user clicks button
-    :return:
+    :return JSON response:
     """
-    print('Hello world\n')
-    return None
+    data = request.get_json()
+    set_id = db.insert_set(data)
+    db.insert_workout(session['training_session'], set_id, data)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@bp.route('/training_session', methods=['GET', 'POST'])
+def training_session():
+    """
+    Creates training sessions when user clicks start workout
+    :return JSON response:
+    """
+    if request.method == 'POST':
+        session['training_session'] = db.get_training_session(session['user'])
+        resp = f"""Training session created with 
+                ID#{session['training_session']}"""
+    return json.dumps(resp), 200, {'ContentType': 'application/json'}
 
 

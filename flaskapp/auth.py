@@ -41,6 +41,7 @@ def logout():
         flash('You have been logout', 'info')
     session.pop('user', None)
     session.pop('password', None)
+    session.pop('training_session', None)
     return redirect(url_for('auth.login'))
 
 
