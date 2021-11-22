@@ -30,6 +30,6 @@ def view_progress():
     :return:
     """
     data = request.get_json()
-    print(data)
-    return json.dumps({'success': True}), 200, {
+    exercise_data = db.get_exercise_data(data, session['user'])
+    return json.dumps(exercise_data), 200, {
         'ContentType': 'application/json'}

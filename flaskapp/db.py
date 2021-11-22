@@ -257,3 +257,27 @@ def insert_workout(training_session_id: str, set_id: str, data: Dict) -> Optiona
     except sqlite3.Error as error:
         print(error)
         return error
+
+
+def get_exercise_data(data: Dict, user: str) -> Optional[Dict]:
+    conn = get_db()
+    try:
+        exe_data = conn.execute("""SELECT AVG(s_weight), r_datecompleted
+                              FROM user,
+                                   training_session, workout, sets, exercise
+                             WHERE u_userID = r_userID AND
+                                   w_setID = s_setID AND
+                                   w_sessionID = r_sessionID AND
+                                   w_exerciseID = e_exerciseID AND
+                                   u_name = ? AND
+                                   e_name = ? AND
+                                   r_datecompleted BETWEEN ? AND ?
+                                   group by r_datecompleted;""",
+                                (user, data['exercise'],
+                                 data['start_date'], data['end_date'])).fetchall()
+        close_db()
+        data_dict = [dict([('weight', row[0]), ('date', row[1])]) for row in exe_data]
+        return data_dict
+    except sqlite3.Error as error:
+        print(error)
+        return None
