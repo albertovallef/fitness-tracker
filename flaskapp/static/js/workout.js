@@ -4,6 +4,20 @@ var id = 0;
 $( document ).ready( () => {
     $("#start_workout").click( () => {
         $('.workout-tab').css('visibility',"visible");
+        $.ajax({
+            url: 'training_session',
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'POST',
+            data: JSON.stringify("New session"),
+            success: function (response) {
+                $('#start_workout_span').text(response);
+            },
+            error: function (response) {
+                $('#start_workout_span').text("An error has occurred, please try again :(");
+                console.log(response)
+            }
+        });
     })
     $(".close-button").click( () => {
         $('.workout-tab').css('visibility',"hidden");

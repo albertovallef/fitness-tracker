@@ -24,7 +24,7 @@ def workout():
 def add_workout():
     """
     Add workout to database when user clicks button
-    :return:
+    :return JSON response:
     """
     data = request.get_json()
     set_id = db.insert_set(data)
@@ -32,12 +32,16 @@ def add_workout():
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
-@bp.route('/add_workout', methods=['POST'])
-def add_set():
+@bp.route('/training_session', methods=['GET', 'POST'])
+def training_session():
     """
-    Add set to database when user clicks button
-    :return:
+    Creates training sessions when user clicks start workout
+    :return JSON response:
     """
-    return None
+    if request.method == 'POST':
+        session['training_session'] = db.get_training_session(session['user'])
+        resp = f"""Training session created with 
+                ID#{session['training_session']}"""
+    return json.dumps(resp), 200, {'ContentType': 'application/json'}
 
 

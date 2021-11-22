@@ -23,7 +23,6 @@ def login():
         if resp is None:
             session['user'] = user
             session['password'] = password
-            session['training_session'] = db.get_training_session(user)
             return redirect(url_for('home'))
         else:
             flash(resp, 'info')
