@@ -21,8 +21,10 @@ $( document ).ready( () => {
     })
     $(".close-button").click( () => {
         $('.workout-tab').css('visibility',"hidden");
+        $('.workout-inputs').css('visibility',"hidden");
     })
     $("#add-set").click( () => {
+        $('.workout-inputs').css('visibility',"visible");
         id += 1;
         var content_table = document.getElementById("workout-tab-content");
         var table = createTable(id);
