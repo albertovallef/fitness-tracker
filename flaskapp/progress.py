@@ -17,7 +17,7 @@ def progress():
     Page shows users their fitness progress
     :return: html progress template
     """
-    exercises = db.get_exercises()
+    exercises = db.get_user_exercises(session['user'])
     categories = db.get_categories()
     return render_template('progress.html', exercises=exercises,
                            categories=categories)

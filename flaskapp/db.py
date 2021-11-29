@@ -83,8 +83,8 @@ def register_user(username: str, password: str, is_trainer: str, b_age: int, b_h
     except sqlite3.IntegrityError:
         error = f"Username {username} already exists"
         return error
-    except Exception:
-        error = "500 Internal Server Error"
+    except sqlite3.Error as error:
+        print(error)
         return error
 
 
@@ -107,8 +107,8 @@ def login_user(username: str, password: str) -> Optional[str]:
             return error
         else:
             return error
-    except Exception:
-        error = "500 Internal Server Error"
+    except sqlite3.Error as error:
+        print(error)
         return error
 
 
@@ -125,8 +125,30 @@ def get_exercises() -> Optional[str]:
         # print(results)
         close_db()
         return exercises
-    except Exception:
-        error = "no exercises found"
+    except sqlite3.Error as error:
+        print(error)
+        return error
+
+
+def get_user_exercises(user_name: str) -> Optional[str]:
+    """
+    returns all e_names from exercise table from a specific user
+    :return: list of exercise names
+    """
+    conn = get_db()
+    error = None
+    try:
+        exercises = conn.execute("""SELECT DISTINCT e_name
+                              FROM user, training_session, 
+                                   workout, exercise
+                             WHERE u_userID = r_userID AND 
+                                   r_sessionID = w_sessionID AND 
+                                   w_exerciseID = e_exerciseID AND 
+                                   u_name = ?;""", (user_name, )).fetchall()
+        close_db()
+        return exercises
+    except sqlite3.Error as error:
+        print(error)
         return error
 
 
@@ -143,8 +165,8 @@ def get_categories() -> Optional[str]:
         # print(results)
         close_db()
         return categories
-    except Exception:
-        error = "no categories found"
+    except sqlite3.Error as error:
+        print(error)
         return error
 
 
@@ -162,8 +184,8 @@ def get_trainers() -> Optional[str]:
         # print(results)
         close_db()
         return exercises
-    except Exception:
-        error = "no trainers found"
+    except sqlite3.Error as error:
+        print(error)
         return error
 
 
