@@ -132,7 +132,7 @@ def get_exercises() -> Optional[str]:
 
 def get_user_exercises(user_name: str) -> Optional[str]:
     """
-    returns all e_names from exercise table
+    returns all e_names from exercise table from a specific user
     :return: list of exercise names
     """
     conn = get_db()
