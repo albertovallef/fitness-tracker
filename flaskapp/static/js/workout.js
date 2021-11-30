@@ -61,6 +61,24 @@ $( document ).ready( () => {
             }
         });
     })
+
+
+    $("#search-by-cat").click( () => {
+        category = document.getElementById("by_cat").value;
+        $.ajax({
+            url: 'search-by-cat',
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'POST',
+            data: JSON.stringify(category),
+            success: function (response) {
+                console.log(response)
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        });
+    })
 });
 
 function createTable(id) {
