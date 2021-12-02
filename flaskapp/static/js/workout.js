@@ -73,6 +73,7 @@ $( document ).ready( () => {
             data: JSON.stringify(category),
             success: function (response) {
                 console.log(response)
+                print(response)
             },
             error: function (response) {
                 console.log(response)

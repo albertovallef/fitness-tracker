@@ -45,7 +45,7 @@ def training_session():
     return json.dumps(resp), 200, {'ContentType': 'application/json'}
 
 
-@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/search-by-cat', methods=['GET', 'POST'])
 def return_by_cat():
     """
     Returns only exercises with a given category
@@ -55,8 +55,6 @@ def return_by_cat():
         print('searching by category')
         data = request.get_json()
         # print(data)
-        exercises = db.get_exercises_by_cat(data)
-        # print(exercises)
-        categories = db.get_categories()
+        return db.get_exercises_by_cat(data)
         
 
