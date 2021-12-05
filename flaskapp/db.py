@@ -208,11 +208,35 @@ def get_trainers() -> Optional[str]:
         print(error)
         return error
 
+def get_non_subscribed_trainers(user) -> Optional[str]:
+    """
+    returns all trainers the user is not subscrbed to
+    """
+    conn = get_db()
+    error = None
+    try:
+        trainers = conn.execute("""SELECT distinct u_name FROM user, trainer
+                                    where t_userID = u_userID
+                                    and u_trainer = 1
+                                    and u_name NOT IN (
+                                        SELECT u2.u_name FROM user u1, user u2, trainer, customer, subscription
+                                        where c_userID = u1.u_userID
+                                        and u1.u_name = ?
+                                        and su_customerID = c_customerID
+                                        and t_trainerID = su_trainerID 
+                                        and u2.u_userID = t_userID
+                                    )
+                                    Order by u_name COLLATE NOCASE""", (user,)).fetchall()
+        # print(trainers)
+        close_db()
+        return trainers
+    except sqlite3.Error as error:
+        print(error)
+        return error
 
 def get_subs(user) -> Optional[str]:
     """
-    returns all u_names of trainer from user table
-    :return: list of trainer's u_name
+    returns all trainers the user is subscribed to
     """
     conn = get_db()
     error = None
@@ -233,8 +257,7 @@ def get_subs(user) -> Optional[str]:
 
 def subscribe(user, trainer) -> Optional[str]:
     """
-    returns all u_names of trainer from user table
-    :return: list of trainer's u_name
+    subscribes the given user and trainer
     """
     conn = get_db()
     error = None
@@ -256,8 +279,7 @@ def subscribe(user, trainer) -> Optional[str]:
 
 def unsubscribe(user, trainer) -> Optional[str]:
     """
-    returns all u_names of trainer from user table
-    :return: list of trainer's u_name
+    unsubscribes a user from a trainer
     """
     conn = get_db()
     error = None

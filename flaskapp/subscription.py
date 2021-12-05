@@ -14,7 +14,7 @@ def subscription():
     Page where users add trainers
     :return: html progress template
     """
-    trainers = db.get_trainers()
+    trainers = db.get_non_subscribed_trainers(session['user'])
     subscription = db.get_subs(session['user'])
     print(subscription)
     return render_template('subscription.html', trainers=trainers, subscriptions = subscription)
@@ -28,8 +28,9 @@ def subscribe():
     trainer = request.get_json()
     print(trainer)
 
-    trainers = db.get_trainers()
     db.subscribe(session['user'], trainer)
+
+    trainers = db.get_non_subscribed_trainers(session['user'])
     subscription = db.get_subs(session['user'])
 
     return json.dumps((trainers, subscription))
@@ -44,7 +45,8 @@ def unsubscribe():
     print(trainer)
     
     db.unsubscribe(session['user'], trainer)
-    trainers = db.get_trainers()
+
+    trainers = db.get_non_subscribed_trainers(session['user'])
     subscription = db.get_subs(session['user'])
 
     return json.dumps((trainers, subscription))
