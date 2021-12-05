@@ -10,7 +10,7 @@ body {
   
   button.default {
     color: #ffffff;
-    background-color: #393ce9;
+    background-color: #3d3fd4;
   }
 
   .bg-steel {
@@ -137,6 +137,11 @@ body {
 
   table.trainers{
     width: 40%; 
+    float: left;
+  }   
+  table.subs{
+    width: 40%; 
+    float: right;
   } 
 
   th.trainer-subscribe{
@@ -160,4 +165,9 @@ body {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+
+  button.unsub-button{
+    color: #ffffff;
+    background-color: rgb(221, 71, 71);
   }

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="{{url_for('static', filename='js/subscription.js')}}"></script>
+
+<h2 class="row justify-content-center align-items-center">Subscription</h2>
+
+<br>
+
+<table id=trainers class="trainers">
+  <tr>
+    <th>Trainers</th>
+    <th class=trainer-subscribe>Subscribe</th>
+  </tr>
+  {% if trainers %}
+    {% for trainer in trainers %}
+    <tr>
+      <td>
+        &nbsp;{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}
+      </td>
+      <td>
+        <button id="{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}" type="submit" value="submit" class="btn sub-button default" onclick="subscribe(this.id)">Subscribe</button>
+        <!-- <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer"></label> -->
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+
+</table>
+
+<table id=subs class="subs">
+  <tr>
+    <th>Subscribtions</th>
+    <th class=trainer-subscribe>Unsubscribe</th>
+  </tr>
+  {% if subscriptions %}
+    {% for trainer in subscriptions %}
+    <tr>
+      <td>
+        &nbsp;{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}
+      </td>
+      <td>
+        <!-- <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer" checked></label> -->
+        <button id="{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}" type="submit" value="submit" class="btn unsub-button" onclick="unsubscribe(this.id)">Unsubscribe</button>
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+
+</table>
+
+
+{% endblock %}
