@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="row justify-content-center align-items-center">Subscription</h2>
+
+<br>
+
+<table class="trainers">
+  <tr>
+    <th>Trainers</th>
+    <th class=trainer-subscribe>Subscribe</th>
+  </tr>
+  {% if trainers %}
+    {% for trainer in trainers %}
+    <tr>
+      <td>
+        {{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}
+      </td>
+      <td>
+        <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer"></label>
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+
+</table>
+
+<table class="subs">
+  <tr>
+    <th>Subscribtions</th>
+    <th class=trainer-subscribe>Subscribe</th>
+  </tr>
+  {% if subscriptions %}
+    {% for trainer in subscriptions %}
+    <tr>
+      <td>
+        {{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}
+      </td>
+      <td>
+        <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer" checked></label>
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+
+</table>
+
+
+
+{% endblock %}

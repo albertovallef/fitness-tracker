@@ -198,12 +198,12 @@ def get_trainers() -> Optional[str]:
     conn = get_db()
     error = None
     try:
-        exercises = conn.execute("""SELECT u_name FROM user, trainer
+        trainers = conn.execute("""SELECT u_name FROM user, trainer
                                     where t_userID = u_userID
                                     Order by u_name""").fetchall()
         # print(results)
         close_db()
-        return exercises
+        return trainers
     except sqlite3.Error as error:
         print(error)
         return error

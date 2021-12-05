@@ -137,6 +137,11 @@ body {
 
   table.trainers{
     width: 40%; 
+    float: left;
+  }   
+  table.subs{
+    width: 40%; 
+    float: right;
   } 
 
   th.trainer-subscribe{
