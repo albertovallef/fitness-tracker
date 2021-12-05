@@ -4,6 +4,7 @@ var id = 0;
 $( document ).ready( () => {
     $("#start_workout").click( () => {
         $('.workout-tab').css('visibility',"visible");
+        addSep()
         $.ajax({
             url: 'training_session',
             contentType: 'application/json',
@@ -19,19 +20,19 @@ $( document ).ready( () => {
             }
         });
     })
+
+
     $(".close-button").click( () => {
         $('.workout-tab').css('visibility',"hidden");
         $('.workout-inputs').css('visibility',"hidden");
     })
-    $("#add-set").click( () => {
-        $('.workout-inputs').css('visibility',"visible");
-        id += 1;
-        var content_table = document.getElementById("workout-tab-content");
-        var table = createTable(id);
-        content_table.appendChild(table);
 
+    $("#new-seperator").click( () => {
+        // $('.workout-inputs').css('visibility',"visible");
+        addSep()
     })
-    $("#add-exercise-btn").click( () => {
+
+    $("#add-set").click( () => {
         var table = document.getElementById("table" + id);
         exe_name = document.getElementById("select-exercise").value;
         reps = document.getElementById("input-reps").value;
@@ -62,6 +63,23 @@ $( document ).ready( () => {
         });
     })
 
+    $("#reset-filter").click( () => {
+        console.log("RESETTING FILTER")
+        $.ajax({
+            url: 'get-exercises',
+            contentType: 'application/json',
+            dataType: 'json',
+            type: 'POST',
+            success: function (response) {
+                console.log(response)
+                updateExercises(response)
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        });
+    })
+
 
     $("#search-by-cat").click( () => {
         category = document.getElementById("by_cat").value;
@@ -73,7 +91,7 @@ $( document ).ready( () => {
             data: JSON.stringify(category),
             success: function (response) {
                 console.log(response)
-                print(response)
+                updateExercises(response)
             },
             error: function (response) {
                 console.log(response)
@@ -81,6 +99,26 @@ $( document ).ready( () => {
         });
     })
 });
+
+
+function updateExercises(exercises) {
+    var old = document.getElementById("select-exercise");
+    old.innerHTML='';
+    for(var i = 0; i < exercises.length; i++){
+        var option = document.createElement("option");
+        option.setAttribute('id','option-exe')
+        var text = document.createTextNode(exercises[i])
+        option.appendChild(text)
+        old.appendChild(option)
+    }
+}
+
+function addSep() {
+    id += 1;
+    var content_table = document.getElementById("workout-tab-content");
+    var table = createTable(id);
+    content_table.appendChild(table);
+}
 
 function createTable(id) {
     var table = document.createElement("table");
