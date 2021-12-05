@@ -15,5 +15,37 @@ def subscription():
     :return: html progress template
     """
     trainers = db.get_trainers()
-    subscription = trainers
+    subscription = db.get_subs(session['user'])
+    print(subscription)
     return render_template('subscription.html', trainers=trainers, subscriptions = subscription)
+
+@bp.route('/subscribe', methods=('GET', 'POST'))
+def subscribe():
+    """
+    Page where users add trainers
+    :return: html progress template
+    """
+    trainer = request.get_json()
+    print(trainer)
+
+    trainers = db.get_trainers()
+    db.subscribe(session['user'], trainer)
+    subscription = db.get_subs(session['user'])
+
+    return json.dumps((trainers, subscription))
+
+@bp.route('/unsubscribe', methods=('GET', 'POST'))
+def unsubscribe():
+    """
+    Page where users add trainers
+    :return: html progress template
+    """
+    trainer = request.get_json()
+    print(trainer)
+    
+    db.unsubscribe(session['user'], trainer)
+    trainers = db.get_trainers()
+    subscription = db.get_subs(session['user'])
+
+    return json.dumps((trainers, subscription))
+

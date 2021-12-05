@@ -200,7 +200,7 @@ def get_trainers() -> Optional[str]:
     try:
         trainers = conn.execute("""SELECT u_name FROM user, trainer
                                     where t_userID = u_userID
-                                    Order by u_name""").fetchall()
+                                    Order by u_name COLLATE NOCASE""").fetchall()
         # print(results)
         close_db()
         return trainers
@@ -208,6 +208,82 @@ def get_trainers() -> Optional[str]:
         print(error)
         return error
 
+
+def get_subs(user) -> Optional[str]:
+    """
+    returns all u_names of trainer from user table
+    :return: list of trainer's u_name
+    """
+    conn = get_db()
+    error = None
+    try:
+        trainers = conn.execute("""SELECT u2.u_name FROM user u1, user u2, trainer, customer, subscription
+                                    where c_userID = u1.u_userID
+                                    and u1.u_name = ?
+                                    and su_customerID = c_customerID
+                                    and t_trainerID = su_trainerID 
+                                    and u2.u_userID = t_userID
+                                    Order by u2.u_name COLLATE NOCASE""", (user,)).fetchall()
+        # print(results)
+        close_db()
+        return trainers
+    except sqlite3.Error as error:
+        print(error)
+        return error
+
+def subscribe(user, trainer) -> Optional[str]:
+    """
+    returns all u_names of trainer from user table
+    :return: list of trainer's u_name
+    """
+    conn = get_db()
+    error = None
+    try:
+        print(user,trainer)
+        conn.execute("""
+                    INSERT INTO subscription (su_trainerID, su_customerID)
+                    select t_trainerID, c_customerID from
+                    (Select t_trainerID from user, trainer where t_userID = u_userID and u_name = ?),
+                    (select c_customerID from user, customer where u_userID = c_userID and u_name = ?);
+                    """, (trainer,user))
+        conn.commit()
+        close_db()
+        return None
+    except sqlite3.Error as error:
+        print(error)
+        return error
+
+
+def unsubscribe(user, trainer) -> Optional[str]:
+    """
+    returns all u_names of trainer from user table
+    :return: list of trainer's u_name
+    """
+    conn = get_db()
+    error = None
+    try:
+        print(user,trainer)
+        conn.execute("""
+                DELETE FROM subscription
+                WHERE su_trainerID IN (
+                    SELECT t_trainerID
+                    FROM user, trainer
+                    WHERE u_userID = t_userID
+                    and u_name = ?
+                )
+                AND
+                su_customerID IN (
+                    SELECT c_customerID
+                    FROM user, customer
+                    WHERE u_userID = c_userID
+                    and u_name = ?)
+                    """, (trainer,user))
+        conn.commit()
+        close_db()
+        return None
+    except sqlite3.Error as error:
+        print(error)
+        return error
 
 def get_training_session(user: str) -> Optional[str]:
     """
