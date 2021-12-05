@@ -45,3 +45,24 @@ def training_session():
     return json.dumps(resp), 200, {'ContentType': 'application/json'}
 
 
+@bp.route('/search-by-cat', methods=['GET', 'POST'])
+def return_by_cat():
+    """
+    Returns only exercises with a given category
+    :return JSON response:
+    """
+    if request.method == 'POST':
+        # print('searching by category')
+        data = request.get_json()
+        # print(data)
+        return json.dumps(db.get_exercises_by_cat(data))
+        
+@bp.route('/get-exercises', methods=['GET', 'POST'])
+def get_exercises():
+    """
+    Returns only exercises with a given category
+    :return JSON response:
+    """
+    if request.method == 'POST':
+        return json.dumps(db.get_exercises())
+

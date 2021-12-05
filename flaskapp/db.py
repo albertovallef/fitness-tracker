@@ -129,6 +129,26 @@ def get_exercises() -> Optional[str]:
         print(error)
         return error
 
+def get_exercises_by_cat(category: str) -> Optional[str]:
+    """
+    returns all e_names from exercise table
+    :return: list of exercise names
+    """
+    conn = get_db()
+    error = None
+    try:
+        # print(type(category))
+        exercises = conn.execute("""SELECT e_name FROM exercise, ex_cat, category
+                                    where c_name = ?
+                                    and c_categoryID = ec_categoryID
+                                    and e_exerciseID = ec_exerciseID
+                                    Order by e_name""", (category,)).fetchall()
+        print(exercises)
+        close_db()
+        return exercises
+    except sqlite3.Error as error:
+        print(error)
+        return error
 
 def get_user_exercises(user_name: str) -> Optional[str]:
     """

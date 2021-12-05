@@ -1,46 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="row justify-content-center align-items-center">Add Workout</h1>
-<button id="start_workout" type="submit" class="btn btn-primary">Start Workout</button>    <span id="start_workout_span"></span>
+<h1 class="row justify-content-center align-items-center">Add Set</h1>
+<button id="start_workout" type="submit" class="btn btn-primary">Start Training Session</button> <span
+  id="start_workout_span"></span>
 <br><br>
 <div class="workout-tab">
-  <button id="add-set" class="btn btn-primary">Add set</button>
+  <button id="new-seperator" class="btn btn-primary">New Seperator</button>
   <button class="close-button">x</button>
- <div id="workout-tab-content" class="workout-tab-content">
-  <div id="add-exercise" class="input-group">
-    <select name="exercise" id="select-exercise" class="form-control">
-      {% if exercises %}
-        {% for exercise in exercises %}
-        <option id="option-exe">{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
+
+
+  <div id="add-exercise" class="workout-inputs">
+
+    <h2>Search by Category</h2>
+    <select name="categories" id="by_cat" class="form-control2">
+      {% if categories %}
+      {% for category in categories %}
+      <option id="option-cat">{{ category|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
       {% endfor %}
       {% endif %}
-    <div class="input-group">
-    <input id="input-reps" name="reps" type="text"> 
-    <input id="input-weight" name="weight" type="text">
-    <input id="input-duration" name="duration" type="text">
-    <span class="input-group-btn">
-      <button id="add-exercise-btn"type="submit" value="submit" class="btn btn-primary">Add Workout</button>
-    </span>
+    </select>
+    <button id="search-by-cat" type="submit" value="submit" class="btn btn-primary">Filter by Category (optional)</button>
+    <button id="reset-filter" type="submit" value="submit" class="btn btn-primary">Reset Filter</button>
+
+
+    <select name="exercise" id="select-exercise" class="form-control">
+      {% if exercises %}
+      {% for exercise in exercises %}
+      <option id="option-exe">{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
+      {% endfor %}
+      {% endif %}
+      <div class="input-group">
+        <input id="input-reps" name="reps" type="text" placeholder="reps" class="input-reps">
+        <input id="input-weight" name="weight" type="text" placeholder="weight" class="input-reps">
+        <input id="input-duration" name="duration" type="text" placeholder="duration" class="input-reps">
+        <span class="input-group-btn">
+          <button id="add-set" type="submit" value="submit" class="btn btn-primary">Add Set</button>
+        </span>
+      </div>
+    </select>
+
+    <div id="workout-tab-content" class="workout-tab-content">
+
+    </div>
   </div>
-</div> 
-</div>
 
 
-<br>
-<br>
-<br>
-<br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 
 
-<h2>Search by Category</h2>
-<input list="categories" name="by_cat" id="by_cat">
-<datalist id="categories">
-  <!-- {% if categories %} -->
-  {% for category in categories %}
-  <option value='{{ category|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}'>
-  {% endfor %}
-  <!-- {% endif %} -->
-</datalist>
-<button class=default name=by_cat id=by_cat>Show Workouts</button>
 
-{% endblock %}
+
+  {% endblock %}
