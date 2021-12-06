@@ -32,13 +32,31 @@ $( function() {
       type: 'POST',
       async: false,
       data: JSON.stringify(client_data)}).responseJSON;
-
+    
     var chart = new Chart({
       element: document.getElementById("chart"),
       data: datapoints,
       start_date: client_data["start_date"],
       end_date: client_data["end_date"]
-    })
+    });
+
+    chart.draw();
+    
+    var table_info = $.ajax({
+        url: 'view_progress_table',
+        contentType: 'application/json',
+        dataType: 'json',
+        type: 'POST',
+        async: false,
+        data: JSON.stringify(client_data)}).responseJSON;
+
+    var table = new Table({
+      element: document.getElementById("table"),
+      data: table_info,
+      columns: ["Date", "Exercise", "Reps", "Weight"]
+    });
+
+    table.draw();
     
     $("#view-progress-btn").click( () => {
         exe_name = document.getElementById("select-exercise").value;
@@ -64,5 +82,21 @@ $( function() {
               console.log(response)
           }
         });
+
+        $.ajax({
+          url: 'view_progress_table',
+          contentType: 'application/json',
+          dataType: 'json',
+          type: 'POST',
+          data: JSON.stringify(client_data),
+          success: function (response) {
+            table.update_table(response, ["Date", "Exercise", "Reps", "Weight"]);
+
+          },
+          error: function (response) {
+              console.log(response)
+          }
+        });
+
     })
   })

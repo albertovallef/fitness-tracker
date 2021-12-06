@@ -11,7 +11,7 @@ from flaskapp import db
 bp = Blueprint('progress', __name__, url_prefix='/progress')
 
 
-@bp.route('/', methods=('GET', 'POST'))
+@bp.route('/', methods=['GET', 'POST'])
 def progress():
     """
     Page shows users their fitness progress
@@ -23,13 +23,30 @@ def progress():
                            categories=categories)
 
 
-@bp.route('/view_progress', methods=('GET', 'POST'))
+@bp.route('/view_progress', methods=['GET', 'POST'])
 def view_progress():
     """
-    Displays chart for the selected exercise within the date range
-    :return:
+    Serves data(date, average weight) to the js progress for the selected
+    exercise within the given date range
+    :return: json response
     """
     data = request.get_json()
     exercise_data = db.get_exercise_data(data, session['user'])
     return json.dumps(exercise_data), 200, {
         'ContentType': 'application/json'}
+
+
+@bp.route('view_progress_table', methods=['GET', 'POST'])
+def view_progress_table():
+    """
+    Serves data(date completed, exercise name, reps, weight) to the js progress
+    to built the progress table showing
+    :return: json response
+    """
+    data = request.get_json()
+    exercise_table_data = db.get_exercise_table_from_dates(session['user'],
+                                                           data['exercise'],
+                                                           data['start_date'],
+                                                           data['end_date'])
+    return json.dumps(exercise_table_data), 200, {
+            'ContentType': 'application/json'}

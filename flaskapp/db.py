@@ -129,6 +129,7 @@ def get_exercises() -> Optional[str]:
         print(error)
         return error
 
+
 def get_exercises_by_cat(category: str) -> Optional[str]:
     """
     returns all e_names from exercise table
@@ -149,6 +150,7 @@ def get_exercises_by_cat(category: str) -> Optional[str]:
     except sqlite3.Error as error:
         print(error)
         return error
+
 
 def get_user_exercises(user_name: str) -> Optional[str]:
     """
@@ -208,6 +210,7 @@ def get_trainers() -> Optional[str]:
         print(error)
         return error
 
+
 def get_non_subscribed_trainers(user) -> Optional[str]:
     """
     returns all trainers the user is not subscrbed to
@@ -234,6 +237,7 @@ def get_non_subscribed_trainers(user) -> Optional[str]:
         print(error)
         return error
 
+
 def get_subs(user) -> Optional[str]:
     """
     returns all trainers the user is subscribed to
@@ -254,6 +258,7 @@ def get_subs(user) -> Optional[str]:
     except sqlite3.Error as error:
         print(error)
         return error
+
 
 def subscribe(user, trainer) -> Optional[str]:
     """
@@ -306,6 +311,7 @@ def unsubscribe(user, trainer) -> Optional[str]:
     except sqlite3.Error as error:
         print(error)
         return error
+
 
 def get_training_session(user: str) -> Optional[str]:
     """
@@ -422,6 +428,35 @@ def get_exercise_data(data: Dict, user: str) -> Optional[Dict]:
         print(error)
         return None
 
+
+def get_exercise_table_from_dates(user: str, exercise: str,
+                                  start: str, end: str) -> Optional[Dict]:
+    conn = get_db()
+    try:
+        exe_data = conn.execute("""SELECT r_datecompleted, e_name, 
+                                          s_reps, s_weight
+                                  FROM training_session,
+                                       exercise, sets,
+                                       workout, user
+                                 WHERE w_sessionID = r_sessionID AND
+                                       w_exerciseID = e_exerciseID AND
+                                       w_setID = s_setID AND
+                                       u_userID = r_userID AND
+                                       u_name = ? AND
+                                       e_name = ? AND
+                                       r_datecompleted BETWEEN ? AND ?
+                                 GROUP BY s_setID
+                                 ORDER BY r_datecompleted DESC;""",
+                                (user, exercise, start, end)).fetchall()
+        close_db()
+        data_dict = [dict([('Date', row[0]), ('Exercise', row[1]),
+                           ('Reps', row[2]), ('Weight', row[3])]) for row in exe_data]
+        return data_dict
+    except sqlite3.Error as error:
+        print(error)
+        return None
+
+
 def get_body_data(user: str) -> Optional[str]:
     conn = get_db()
     try:
@@ -437,3 +472,4 @@ def get_body_data(user: str) -> Optional[str]:
     except sqlite3.Error as error:
         print(error)
         return None
+
