@@ -4,8 +4,8 @@ class Chart {
         this.start_date = config.start_date;
         this.end_date = config.end_date;
         this.element = config.element;
-        this.draw();
     }
+    
     draw(){
         this.margin = {top: 10, right: 30, bottom: 60, left: 60},
         this.width = 1000 - this.margin.left - this.margin.right,
