@@ -1,5 +1,98 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{text}}
+<h2>
+    {{text}}
+</h2>
+<br>
+{% if body %}
+
+<table>
+
+    <tr>
+        <td>
+            Age: {{ body.0.0 }} <br>
+        </td>
+        <td>
+            <input id="age" name="reps" type="text" placeholder="age">
+            <button id="update-age" type="submit" value="submit" class="btn btn-primary">Update</button>
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            Gender: {{ body.0.1|title }}<br>
+        </td>
+        <td>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            <button id="change-gender" type="submit" value="submit" class="btn btn-primary">Change</button>
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            Height: {{ body.0.2 }} inches<br>
+        </td>
+        <td>
+            <input id="height" name="reps" type="text" placeholder="height">
+            <button id="update-height" type="submit" value="submit" class="btn btn-primary">Update</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Weight: {{ body.0.3 }} lbs <br>
+        </td>
+        <td>
+            <input id="weight" name="reps" type="text" placeholder="weight">
+            <button id="update-weight" type="submit" value="submit" class="btn btn-primary">Update</button>
+        </td>
+    </tr>
+</table>
+
+{% endif %}
+
+
+
+{% if body %}
+
+<table class="trainers">
+
+    <tr>
+        <td>
+            Age
+        </td>
+        <td>
+            {{ body.0.0 }}
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            Gender
+        </td>
+        <td>
+            {{ body.0.1|title }}
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            Height
+        </td>
+        <td>
+            {{ body.0.2 }} inches
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Weight
+        </td>
+        <td>
+            {{ body.0.3 }} lbs <br>
+        </td>
+    </tr>
+</table>
+
+{% endif %}
+
 {% endblock %}

@@ -25,7 +25,8 @@ def home():
     :return: html login template if not session active or home page if session
     """
     if 'user' in session:
-        return render_template('home.html', text=f"Welcome {session['user']}")
+        body = db.get_body_data(session['user'])
+        return render_template('home.html', text=f"Welcome {session['user']}", body = body)
     else:
         return redirect(url_for('auth.login'))
 

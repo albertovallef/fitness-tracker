@@ -10,8 +10,9 @@
 
 
   <div id="add-exercise" class="workout-inputs">
+    <h2 class="workout-header" style="padding-top: .5em;">Search by Category</h2>
+    <hr>
 
-    <h2>Search by Category</h2>
     <select name="categories" id="by_cat" class="form-control2">
       {% if categories %}
       {% for category in categories %}
@@ -21,14 +22,17 @@
     </select>
     <button id="search-by-cat" type="submit" value="submit" class="btn btn-primary">Filter by Category (optional)</button>
     <button id="reset-filter" type="submit" value="submit" class="btn btn-primary">Reset Filter</button>
+    <hr>
 
-
+    <h2 class="workout-header">Choose Exercise</h2>
     <select name="exercise" id="select-exercise" class="form-control">
       {% if exercises %}
       {% for exercise in exercises %}
       <option id="option-exe">{{ exercise|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}</option>
       {% endfor %}
       {% endif %}
+
+
       <div class="input-group">
         <input id="input-reps" name="reps" type="text" placeholder="reps" class="input-reps">
         <input id="input-weight" name="weight" type="text" placeholder="weight" class="input-reps">
