@@ -4,7 +4,10 @@ var id = 0;
 $( document ).ready( () => {
     $("#start_workout").click( () => {
         $('.workout-tab').css('visibility',"visible");
-        addSep()
+        if(id == 0){
+            addSep()
+        }
+
         $.ajax({
             url: 'training_session',
             contentType: 'application/json',
@@ -24,7 +27,7 @@ $( document ).ready( () => {
 
     $(".close-button").click( () => {
         $('.workout-tab').css('visibility',"hidden");
-        $('.workout-inputs').css('visibility',"hidden");
+//        $('.workout-inputs').css('visibility',"hidden");
     })
 
     $("#new-seperator").click( () => {

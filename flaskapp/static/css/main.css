@@ -177,3 +177,7 @@ body {
     font-size: 140%;
     padding-left: .5em;
   }
+
+  #progress-content{
+    position: relative;
+  }
