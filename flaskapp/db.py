@@ -421,3 +421,19 @@ def get_exercise_data(data: Dict, user: str) -> Optional[Dict]:
     except sqlite3.Error as error:
         print(error)
         return None
+
+def get_body_data(user: str) -> Optional[str]:
+    conn = get_db()
+    try:
+        data = conn.execute("""
+                            SELECT b_age, b_gender, b_height, b_weight
+                            FROM body, user
+                            WHERE u_userID = b_userID AND
+                            u_name = ?;
+                            """
+                            ,(user,)).fetchall()
+        close_db()
+        return data
+    except sqlite3.Error as error:
+        print(error)
+        return None

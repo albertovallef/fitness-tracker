@@ -102,7 +102,7 @@ body {
     border: 4px solid black;
     border-top: 0px;
     height: 500px;
-    width: 800px;
+    width: 100%;
     overflow-y: scroll;
   }
 
@@ -155,9 +155,9 @@ body {
 
   .input-reps{
     width: 10%;
-    /* display: block; */
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
+    display: inline;
+    padding: 0.375em 0.75em;
+    font-size: 1em;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
@@ -165,9 +165,15 @@ body {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    
   }
 
   button.unsub-button{
     color: #ffffff;
     background-color: rgb(221, 71, 71);
+  }
+
+  .workout-header{
+    font-size: 140%;
+    padding-left: .5em;
   }
