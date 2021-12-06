@@ -1,50 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>
-    {{text}}
+
+<script src="{{url_for('static', filename='js/home.js')}}"></script>
+
+<h2 style="font-size: 400%;">
+    {{text}}!
+    <br> 
 </h2>
 <br>
 {% if body %}
 
-<table>
+<table class=body-table>
 
     <tr>
-        <td>
+        <td id=age-text>
             Age: {{ body.0.0 }} <br>
         </td>
         <td>
-            <input id="age" name="reps" type="text" placeholder="age">
-            <button id="update-age" type="submit" value="submit" class="btn btn-primary">Update</button>
+            <input id="age-val" name="reps" type="text" placeholder="age">
+            <button id="age" type="submit" value="submit" class="btn btn-primary" onclick="updateBody(this.id)">Update</button>
         </td>
     </tr>
     <tr>
 
-        <td>
-            Gender: {{ body.0.1|title }}<br>
+        <td id=gender-text>
+            Gender:<br>
         </td>
         <td>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-            <button id="change-gender" type="submit" value="submit" class="btn btn-primary">Change</button>
+            
+            <button id="gender-button" type="submit" value="submit" class="btn btn-primary {{ body.0.1 }}" onclick="updateGender(this.innerHTML)">{{ body.0.1|title }}</button>
+            <!-- <button id="female" type="submit" value="submit" class="btn btn-primary" onclick="updateBody(this.id)">Female</button> -->
         </td>
     </tr>
     <tr>
 
-        <td>
+        <td id=height-text>
             Height: {{ body.0.2 }} inches<br>
         </td>
         <td>
-            <input id="height" name="reps" type="text" placeholder="height">
-            <button id="update-height" type="submit" value="submit" class="btn btn-primary">Update</button>
+            <input id="height-val" name="reps" type="text" placeholder="height">
+            <button id="height" type="submit" value="submit" class="btn btn-primary" onclick="updateBody(this.id)">Update</button>
         </td>
     </tr>
     <tr>
-        <td>
+        <td id=weight-text>
             Weight: {{ body.0.3 }} lbs <br>
         </td>
         <td>
-            <input id="weight" name="reps" type="text" placeholder="weight">
-            <button id="update-weight" type="submit" value="submit" class="btn btn-primary">Update</button>
+            <input id="weight-val" name="reps" type="text" placeholder="weight">
+            <button id="weight" type="submit" value="submit" class="btn btn-primary" onclick="updateBody(this.id)">Update</button>
         </td>
     </tr>
 </table>
@@ -52,8 +57,31 @@
 {% endif %}
 
 
+<div id='test'>
 
-{% if body %}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if false %}
 
 <table class="trainers">
 

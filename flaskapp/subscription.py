@@ -51,3 +51,18 @@ def unsubscribe():
 
     return json.dumps((trainers, subscription))
 
+@bp.route('view_progress_table', methods=['GET', 'POST'])
+def view_progress_table():
+    """
+    Serves data(date completed, exercise name, reps, weight) to the js progress
+    to built the progress table showing
+    :return: json response
+    """
+    data = request.get_json()
+    # print('data',data)
+    exercise_table_data = db.get_all_exercises_from_dates(data['trainer'],
+                                                           data['start_date'],
+                                                           data['end_date'])
+    # print(exercise_table_data)
+    return json.dumps(exercise_table_data), 200, {
+            'ContentType': 'application/json'}

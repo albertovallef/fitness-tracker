@@ -125,6 +125,14 @@ body {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   }
 
+  .view-workouts{
+    border: 4px solid black;
+    height: 500px;
+    width: 100%;
+    overflow-y: scroll;
+    margin-top: 1em;
+  }
+
   table{ 
     width: 100%; 
     border: 1px solid blue;
@@ -138,10 +146,17 @@ body {
   table.trainers{
     width: 40%; 
     float: left;
+    margin-bottom: 1%;
   }   
   table.subs{
     width: 40%; 
     float: right;
+    margin-bottom: 1%;
+    border: 1px solid red;
+  } 
+
+  table.subs th, table.subs td{
+    border: 1px solid red;
   } 
 
   th.trainer-subscribe{
@@ -180,4 +195,32 @@ body {
 
   #progress-content{
     position: relative;
+  }
+
+  button.female{
+    background-color: rgb(221, 71, 71);
+  }
+
+  button.male{
+    background-color: rgb(71, 73, 221);
+  }
+
+  button.female:hover{
+    background-color: rgb(0, 4, 255);
+  }
+
+  button.male:hover{
+    background-color: rgb(255, 0, 0);
+  }
+
+  table.body-table{
+    font-size: 300%;
+  }
+
+  table.body-table td button{
+    font-size: 100%;
+  }
+
+  table.body-table td input{
+    width: 300px;
   }

@@ -457,6 +457,31 @@ def get_exercise_table_from_dates(user: str, exercise: str,
         return None
 
 
+def get_all_exercises_from_dates(user: str, start: str, end: str) -> Optional[Dict]:
+    conn = get_db()
+    try:
+        exe_data = conn.execute("""SELECT r_datecompleted, e_name, 
+                                          s_reps, s_weight
+                                  FROM training_session,
+                                       exercise, sets,
+                                       workout, user
+                                 WHERE w_sessionID = r_sessionID AND
+                                       w_exerciseID = e_exerciseID AND
+                                       w_setID = s_setID AND
+                                       u_userID = r_userID AND
+                                       u_name = ? AND
+                                       r_datecompleted BETWEEN ? AND ?
+                                 GROUP BY s_setID
+                                 ORDER BY r_datecompleted DESC;""",
+                                (user, start, end)).fetchall()
+        close_db()
+        data_dict = [dict([('Date', row[0]), ('Exercise', row[1]),
+                           ('Reps', row[2]), ('Weight', row[3])]) for row in exe_data]
+        return data_dict
+    except sqlite3.Error as error:
+        print(error)
+        return None
+
 def get_body_data(user: str) -> Optional[str]:
     conn = get_db()
     try:
@@ -473,3 +498,31 @@ def get_body_data(user: str) -> Optional[str]:
         print(error)
         return None
 
+def update_body(user, stat, value) -> Optional[str]:
+    """
+    Update the body of the given user
+    :param user: the user whose body will be updated
+    :param stat: the stat that will be changed, must be b_weight, b_age, or b_height
+    :param value: new value
+    :return: None or error
+    """
+    conn = get_db()
+    try:
+        # if stat not in ['b_height','b_weight','b_age']:
+        #     print('ERROR: not a valid stat')
+        #     return None
+        query = """
+                UPDATE body
+                SET """ + stat + """ = ?
+                FROM user
+                WHERE b_userID = u_userID AND
+                    u_name = ?;
+                """
+        data = conn.execute(query
+                            ,( value ,user))
+        conn.commit()
+        close_db()
+        return data
+    except sqlite3.Error as error:
+        print(error)
+        return None
