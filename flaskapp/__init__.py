@@ -1,7 +1,7 @@
 """
 This file starts and configures the flask application
 """
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, json, request
 from flaskapp import auth, db, workout, progress, subscription
 
 
@@ -29,6 +29,21 @@ def home():
         return render_template('home.html', text=f"Welcome {session['user']}", body = body)
     else:
         return redirect(url_for('auth.login'))
+
+@app.route('/update-body', methods=('GET', 'POST'))
+def unsubscribe():
+    """
+    Page where users add trainers
+    :return: html progress template
+    """
+    data = request.get_json()
+    print(data)
+    
+    db.update_body(session['user'], data[0], data[1])
+
+    return json.dumps(data)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
