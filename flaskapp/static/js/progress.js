@@ -63,6 +63,12 @@ $( function() {
         start_date = document.getElementById("start-date").value;
         end_date = document.getElementById("end-date").value;
 
+        //makes sure user put a value in
+        if(start_date == '' || end_date== ''){
+            alert('Text field is empty!')
+            return
+        }
+
         var client_data = {
             "exercise": exe_name,
             "start_date": start_date,
