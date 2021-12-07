@@ -16,10 +16,10 @@
     {% for trainer in trainers %}
     <tr>
       <td>
-        &nbsp;{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}
+        &nbsp;{{ trainer[0] }}
       </td>
       <td>
-        <button id="{{ trainer|replace(")","")|replace("(","")|replace(",","")|replace("'","") }}" type="submit" value="submit" class="btn sub-button default" onclick="subscribe(this.id)">Subscribe</button>
+        <button id="{{ trainer[0] }}" type="submit" value="submit" class="btn sub-button default" onclick="subscribe(this.id)">Subscribe</button>
         <!-- <input type="checkbox" class="form-control" id='is_trainer' name="is_trainer"></label> -->
       </td>
     </tr>
