@@ -37,9 +37,14 @@ class Chart {
         this.xScale = d3.scaleTime()
             .domain([min_date, max_date])
             .range([0, this.width]);
-        
+
+        console.log(d3.extent(this.data, yValue))
+
+//        this.yScale = d3.scaleLinear()
+//            .domain(d3.extent(this.data, yValue))
+//            .range([this.height, 0]);
         this.yScale = d3.scaleLinear()
-            .domain(d3.extent(this.data, yValue))
+            .domain([d3.min(this.data,yValue) -10 , d3.max(this.data,yValue)+10])
             .range([this.height, 0]);
     }
 

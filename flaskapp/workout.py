@@ -56,7 +56,8 @@ def return_by_cat():
         data = request.get_json()
         # print(data)
         return json.dumps(db.get_exercises_by_cat(data))
-        
+
+
 @bp.route('/get-exercises', methods=['GET', 'POST'])
 def get_exercises():
     """
